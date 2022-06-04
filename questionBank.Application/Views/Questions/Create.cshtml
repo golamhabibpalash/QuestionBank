@@ -1,16 +1,14 @@
-﻿@model questionBank.Application.Models.Question
+﻿@model questionBank.Application.ViewModel.QuestionVM
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Question</h4>
+<h4>Create Question</h4>
 <hr />
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Uddipok" class="control-label"></label>
@@ -21,7 +19,7 @@
             <div class="form-group row pt-2 pb-2">
 
                 <div class="col-md-6">
-                    <input type="file" asp-for="Image" class="form-control" />
+                    <input asp-for="Image" class="form-control" />
                     <span asp-validation-for="Image" class="text-danger"></span>
                 </div>
 
@@ -39,31 +37,79 @@
             </div>
 
             <div class="form-group row">
-                <label asp-for="ChapterId" class="col-md-2 text-md-end col-form-label">Class</label>
+                <label asp-for="AcademicClassId" class="col-md-2 text-md-end col-form-label">Class</label>
                 <div class="col-md-2">
-                    <input type="text" name="name" value="" class="form-control" />
+                    <select asp-for="AcademicClassId" class="form-control" asp-items="ViewBag.AcademicClassId">
+                        <option disabled selected>Select Class</option>
+                    </select>
                 </div>
-                <label asp-for="ChapterId" class="col-md-2 text-md-end">Subject</label>
+                <label asp-for="AcademicSubjectId" class="col-md-2 text-md-end col-form-label">Subject</label>
                 <div class="col-md-2">
-                    <input type="text" name="name" value="" class="form-control" />
+                    <select asp-for="AcademicSubjectId" class="form-control">
+                        <option disabled selected>Select Class First</option>
+                    </select>
                 </div>
-                <label asp-for="ChapterId" class="col-md-2 text-md-end">Chapter</label>
+                <label asp-for="ChapterId" class="col-md-2 text-md-end col-form-label">Chapter</label>
                 <div class="col-md-2">
-                    <select asp-for="ChapterId" class="form-control" asp-items="ViewBag.ChapterId"></select>
+                    <select asp-for="ChapterId" class="form-control" >
+                        <option disabled selected>Select Subject First</option>
+                    </select>
                 </div>
             </div>
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <a class="btn btn-info" asp-action="Index">Back to List</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('#AcademicClassId').change(function () {
+                let classId = $('#AcademicClassId option:selected').val();                
+                $.ajax({
+                    url: '/Questions/SelectSubjectByClassId?classId=' + classId,
+                    method: 'Post',
+                    type: 'JSON',
+                    success: function (data) {
+                        $('#AcademicSubjectId').empty();
+                        var op = '<option disabled selected>Select Subject</option>';
+                        $('#AcademicSubjectId').append(op);
+                        $.each(data, function (i, obj) {
+                            var op = "<option value='" + obj.id + "'>" + obj.subjectName + "</option>";
+                            $('#AcademicSubjectId').append(op);
+                        });
+                    },
+                    error: function () { }
+                });
+            });
+
+            $('#AcademicSubjectId').change(function () {
+                let subjectId = $('#AcademicSubjectId option:selected').val();                
+                $.ajax({
+                    url: '/Questions/SelectChapterBySubjectId?SubjectId=' + subjectId,
+                    method: 'Post',
+                    type: 'JSON',
+                    success: function (data) {
+                        $('#ChapterId').empty();
+                        var op = '<option disabled selected>Select Chapter</option>';
+                        $('#ChapterId').append(op);
+                        $.each(data, function (i, obj) {
+                            console.log(obj);
+                            var op = "<option value='" + obj.id + "'>" + obj.chapterName + "</option>";
+                            $('#ChapterId').append(op);
+                        });
+                    },
+                    error: function () { }
+                });
+            });
+
+
+        });
+    </script>
 }

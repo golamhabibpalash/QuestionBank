@@ -167,5 +167,16 @@ namespace questionBank.Application.Controllers
         {
           return (_context.Questions?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        public async Task<JsonResult> SelectSubjectByClassId(int classId)
+        {
+            var subjects = await _context.AcademicSubjects.Where(m => m.AcademicClassId == classId).ToListAsync();
+            return Json(subjects);
+        }
+        public async Task<JsonResult> SelectChapterBySubjectId(int subjectId)
+        {
+            var chapters = await _context.Chapters.Where(m => m.AcademicSubjectId == subjectId).ToListAsync();
+            return Json(chapters);
+        }
     }
 }
