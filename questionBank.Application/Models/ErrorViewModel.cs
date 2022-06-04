@@ -1,4 +1,4 @@
-namespace questionBank.APP.Models
+namespace questionBank.Application.Models
 {
     public class ErrorViewModel
     {

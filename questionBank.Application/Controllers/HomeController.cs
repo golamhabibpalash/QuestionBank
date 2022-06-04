@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using questionBank.APP.Models;
+using questionBank.Application.Models;
 using System.Diagnostics;
 
-namespace questionBank.APP.Controllers
+namespace questionBank.Application.Controllers
 {
     public class HomeController : Controller
     {
