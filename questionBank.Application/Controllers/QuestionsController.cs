@@ -48,7 +48,10 @@ namespace questionBank.Application.Controllers
         // GET: Questions/Create
         public IActionResult Create()
         {
-            ViewData["ChapterId"] = new SelectList(_context.Chapters, "Id", "Id");
+            ViewData["AcademicClassId"] = new SelectList(_context.AcademicClasses, "Id", "ClassName");
+            ViewData["AcademicSubjectId"] = new SelectList(_context.AcademicSubjects, "Id", "SubjectName");
+            ViewData["ChapterId"] = new SelectList(_context.Chapters, "Id", "ChapterName");
+
             return View();
         }
 
