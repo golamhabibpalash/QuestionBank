@@ -4,6 +4,6 @@
     {
         public string SubjectName { get; set; } = string.Empty;
         public int AcademicClassId { get; set; }
-        public AcademicClass AcademicClass { get; set; } = new AcademicClass();
+        public AcademicClass? AcademicClass { get; set; }
     }
 }
