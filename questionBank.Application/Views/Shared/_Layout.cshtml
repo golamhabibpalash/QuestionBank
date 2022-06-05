@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Question Bank - @ViewBag.TItle</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="~/theme/css/styles.css" rel="stylesheet" />
+
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/fontawesome.min.css" rel="stylesheet" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -19,11 +22,9 @@
             <div class="sidebar-heading border-bottom bg-light">Question Bank</div>
             <div class="list-group list-group-flush">
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Questions">Question</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Shortcuts</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Overview</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="AcademicClasses">Academic Class</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="AcademicSubjects">Academic Subject</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Chapters">Chapter</a>
             </div>
         </div>
         <!-- Page content wrapper-->
@@ -31,7 +32,9 @@
             <!-- Top navigation-->
             <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
                 <div class="container-fluid">
-                    <button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button>
+                    <button class="btn btn-primary" id="sidebarToggle">
+                        <i id="arrowKey" class="fa-solid fa-arrow-left"></i>
+                    </button>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
@@ -56,10 +59,30 @@
             </div>
         </div>
     </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap core JS-->
     <script src="~/theme/css/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="~/theme/js/scripts.js"></script>
-    @await RenderSectionAsync("Scritps", required: false)
+    <script src="~/lib/font-awesome/js/all.min.js"></script>
+    <script src="~/lib/font-awesome/js/fontawesome.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            $('#sidebarToggle').click(function () {
+                let className = $('#arrowKey').attr('class');
+                if (className == 'svg-inline--fa fa-arrow-left') {
+                    $('#arrowKey').removeAttr('svg-inline--fa fa-arrow-left');
+                    $('#arrowKey').addClass('svg-inline--fa fa-arrow-right');
+                }
+                else {
+                    $('#arrowKey').removeAttr('svg-inline--fa fa-arrow-right');
+                    $('#arrowKey').addClass('svg-inline--fa fa-arrow-left');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
