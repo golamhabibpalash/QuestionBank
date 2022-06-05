@@ -7,7 +7,7 @@
     <meta name="author" content="" />
     <title>Question Bank - @ViewBag.TItle</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    @*<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />*@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="~/theme/css/styles.css" rel="stylesheet" />
 
@@ -19,7 +19,11 @@
     <div class="d-flex" id="wrapper">
         <!-- Sidebar-->
         <div class="border-end bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading border-bottom bg-light">Question Bank</div>
+            <div class="sidebar-heading border-bottom bg-light">
+                <a asp-action="index" asp-controller="Home">
+                    <img src="~/Images/logo.png" style="width:70%;" />
+                </a>
+            </div>
             <div class="list-group list-group-flush">
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Questions">Question</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="AcademicClasses">Academic Class</a>
