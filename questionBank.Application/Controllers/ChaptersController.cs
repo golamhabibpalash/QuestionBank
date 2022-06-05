@@ -65,7 +65,7 @@ namespace questionBank.Application.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AcademicSubjectId"] = new SelectList(_context.AcademicSubjects, "Id", "Id", chapter.AcademicSubjectId);
+            ViewData["AcademicSubjectId"] = new SelectList(_context.AcademicSubjects, "Id", "SubjectName", chapter.AcademicSubjectId);
             return View(chapter);
         }
 
@@ -82,7 +82,7 @@ namespace questionBank.Application.Controllers
             {
                 return NotFound();
             }
-            ViewData["AcademicSubjectId"] = new SelectList(_context.AcademicSubjects, "Id", "Id", chapter.AcademicSubjectId);
+            ViewData["AcademicSubjectId"] = new SelectList(_context.AcademicSubjects, "Id", "SubjectName", chapter.AcademicSubjectId);
             return View(chapter);
         }
 
@@ -118,7 +118,7 @@ namespace questionBank.Application.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AcademicSubjectId"] = new SelectList(_context.AcademicSubjects, "Id", "Id", chapter.AcademicSubjectId);
+            ViewData["AcademicSubjectId"] = new SelectList(_context.AcademicSubjects, "Id", "SubjectName", chapter.AcademicSubjectId);
             return View(chapter);
         }
 
