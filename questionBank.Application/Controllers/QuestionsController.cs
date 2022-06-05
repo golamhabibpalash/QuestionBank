@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using questionBank.Application.Data;
 using questionBank.Application.Models;
+using questionBank.Application.ViewModel;
 
 namespace questionBank.Application.Controllers
 {
@@ -60,16 +61,38 @@ namespace questionBank.Application.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Uddipok,Image,ImagePosition,ChapterId,Id,CreatedAt,UpdatedAt,CreatedBy,UpdatedBy")] Question question)
+        public async Task<IActionResult> Create([Bind("Uddipok,Image,ImagePosition,ChapterId,AcademicClassId,AcademicSubjectId,QuestionDetails,Id,CreatedAt,UpdatedAt,CreatedBy,UpdatedBy")] QuestionVM questionVM)
         {
+            
+
+            Question question = new Question();
             if (ModelState.IsValid)
             {
+                question.ChapterId = questionVM.ChapterId;
+                question.Uddipok = questionVM.Uddipok;
+                int i = 1;
+                foreach (var qDetail in questionVM.QuestionDetails)
+                {
+                    
+                    QuestionDetail questionDetail = new QuestionDetail();
+
+                    questionDetail.QuestionText = qDetail.QuestionText;
+                    questionDetail.Question = question;
+                    questionDetail.QuestionId = qDetail.QuestionId;
+                    questionDetail.QuestionTypeId = i;
+                    questionDetail.CreatedAt = DateTime.Now;
+                    questionDetail.CreatedBy = "User";
+
+                    question.QuestionDetails.Add(questionDetail);
+                    i++;
+                }                
+
                 _context.Add(question);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ChapterId"] = new SelectList(_context.Chapters, "Id", "Id", question.ChapterId);
-            return View(question);
+            return View(questionVM);
         }
 
         // GET: Questions/Edit/5

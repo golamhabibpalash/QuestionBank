@@ -7,7 +7,7 @@ namespace questionBank.Application.ViewModel
         public string Uddipok { get; set; } = String.Empty;
         public IFormFile? Image { get; set; }
         public string? ImagePosition { get; set; }
-        public virtual ICollection<QuestionDetail>? QuestionDetails { get; set; } 
+        public List<QuestionDetail>? QuestionDetails { get; set; } 
         public int ChapterId { get; set; }
 
         public int AcademicSubjectId { get; set; }

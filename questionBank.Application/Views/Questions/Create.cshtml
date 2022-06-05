@@ -10,56 +10,96 @@
     <div class="col-md-12">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Uddipok" class="control-label"></label>
-                <textarea asp-for="Uddipok" class="form-control" rows="5"></textarea>
-                <span asp-validation-for="Uddipok" class="text-danger"></span>
-            </div>
-
-            <div class="form-group row pt-2 pb-2">
-
-                <div class="col-md-6">
-                    <input asp-for="Image" class="form-control" />
-                    <span asp-validation-for="Image" class="text-danger"></span>
-                </div>
-
-                <label asp-for="ImagePosition" class="control-label col-form-label col-md-1"></label>
+            <div class="row">
                 <div class="col-md-5">
-                    <select asp-for="ImagePosition" class="form-control">
-                        <option value="" disabled selected>Select Position</option>
-                        <option value="Top">Top</option>
-                        <option value="Bottom">Bottom</option>
-                        <option value="Center">Center</option>
-                    </select>
-                    <span asp-validation-for="ImagePosition" class="text-danger"></span>
+                    <div class="form-group row pb-2">
+                        <label asp-for="AcademicClassId" class="col-md-3 text-md-end col-form-label bg-lightgray">Class</label>
+                        <div class="col-md-9">
+                            <select asp-for="AcademicClassId" class="form-control" asp-items="ViewBag.AcademicClassId">
+                                <option disabled selected>Select Class</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row pb-2">
+                        <label asp-for="AcademicSubjectId" class="col-md-3 text-md-end col-form-label bg-lightgray">Subject</label>
+                        <div class="col-md-9">
+                            <select asp-for="AcademicSubjectId" class="form-control">
+                                <option disabled selected>Select Class First</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row pb-2">
+                        <label asp-for="ChapterId" class="col-md-3 text-md-end col-form-label bg-lightgray">Chapter</label>
+                        <div class="col-md-9">
+                            <select asp-for="ChapterId" class="form-control">
+                                <option disabled selected>Select Subject First</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row pb-2">
+                        <label asp-for="ChapterId" class="col-md-3 text-md-end col-form-label bg-lightgray">Tag</label>
+                        <div class="col-md-9">
+                            <select asp-for="ChapterId" class="form-control">
+                                <option disabled selected>Select Subject First</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
+                <div class="col-md-7">
 
+                    <div class="form-group row">
+                        @*<label asp-for="Uddipok" class="col-md-1 control-label col-form-label text-md-end"></label>*@
+                        <div class="col-md-12">
+                            <textarea asp-for="Uddipok" class="form-control" rows="5" placeholder="Write your uddipok here"></textarea>
+                            <span asp-validation-for="Uddipok" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row pt-2">
+                        <div class="col-md-6">
+                            <input asp-for="Image" class="form-control" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </div>
+
+                        <label asp-for="ImagePosition" class="control-label col-form-label col-md-2 text-md-end"></label>
+                        <div class="col-md-4">
+                            <select asp-for="ImagePosition" class="form-control">
+                                <option value="" disabled selected>Select Position</option>
+                                <option value="Top">Top</option>
+                                <option value="Bottom">Bottom</option>
+                                <option value="Center">Center</option>
+                            </select>
+                            <span asp-validation-for="ImagePosition" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    @for (int i = 0; i < 4; i++)
+                    {
+                        int sl = i + 1;
+                        <div class="form-group row pb-2">
+                            <label class="form-label col-md-2 text-md-end col-form-label bg-lightgray">Question @(sl)</label>
+                            <div class="col-md-10">
+                                <input asp-for="@Model.QuestionDetails[i].QuestionText" class="form-control"  />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
 
             <div class="form-group row">
-                <label asp-for="AcademicClassId" class="col-md-2 text-md-end col-form-label">Class</label>
-                <div class="col-md-2">
-                    <select asp-for="AcademicClassId" class="form-control" asp-items="ViewBag.AcademicClassId">
-                        <option disabled selected>Select Class</option>
-                    </select>
-                </div>
-                <label asp-for="AcademicSubjectId" class="col-md-2 text-md-end col-form-label">Subject</label>
-                <div class="col-md-2">
-                    <select asp-for="AcademicSubjectId" class="form-control">
-                        <option disabled selected>Select Class First</option>
-                    </select>
-                </div>
-                <label asp-for="ChapterId" class="col-md-2 text-md-end col-form-label">Chapter</label>
-                <div class="col-md-2">
-                    <select asp-for="ChapterId" class="form-control" >
-                        <option disabled selected>Select Subject First</option>
-                    </select>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <a class="btn btn-info" asp-action="Index">Back to List</a>
+                <div class="col-md-6 text-md-start">
+                    <a class="btn btn-info" asp-action="Index">Back to List</a>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <span class="btn btn-warning" >Clear</span>
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
             </div>
         </form>
     </div>
@@ -71,7 +111,7 @@
     <script>
         $(document).ready(function () {
             $('#AcademicClassId').change(function () {
-                let classId = $('#AcademicClassId option:selected').val();                
+                let classId = $('#AcademicClassId option:selected').val();
                 $.ajax({
                     url: '/Questions/SelectSubjectByClassId?classId=' + classId,
                     method: 'Post',
@@ -90,7 +130,7 @@
             });
 
             $('#AcademicSubjectId').change(function () {
-                let subjectId = $('#AcademicSubjectId option:selected').val();                
+                let subjectId = $('#AcademicSubjectId option:selected').val();
                 $.ajax({
                     url: '/Questions/SelectChapterBySubjectId?SubjectId=' + subjectId,
                     method: 'Post',

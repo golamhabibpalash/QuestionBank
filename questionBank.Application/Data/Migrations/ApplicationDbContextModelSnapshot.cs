@@ -250,7 +250,7 @@ namespace questionBank.Application.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AcademicClasses");
+                    b.ToTable("AcademicClasses", (string)null);
                 });
 
             modelBuilder.Entity("questionBank.Application.Models.AcademicSubject", b =>
@@ -284,7 +284,7 @@ namespace questionBank.Application.Data.Migrations
 
                     b.HasIndex("AcademicClassId");
 
-                    b.ToTable("AcademicSubjects");
+                    b.ToTable("AcademicSubjects", (string)null);
                 });
 
             modelBuilder.Entity("questionBank.Application.Models.Chapter", b =>
@@ -321,7 +321,7 @@ namespace questionBank.Application.Data.Migrations
 
                     b.HasIndex("AcademicSubjectId");
 
-                    b.ToTable("Chapters");
+                    b.ToTable("Chapters", (string)null);
                 });
 
             modelBuilder.Entity("questionBank.Application.Models.Question", b =>
@@ -361,7 +361,7 @@ namespace questionBank.Application.Data.Migrations
 
                     b.HasIndex("ChapterId");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("questionBank.Application.Models.QuestionDetail", b =>
@@ -400,7 +400,7 @@ namespace questionBank.Application.Data.Migrations
 
                     b.HasIndex("QuestionTypeId");
 
-                    b.ToTable("QuestionDetails");
+                    b.ToTable("QuestionDetails", (string)null);
                 });
 
             modelBuilder.Entity("questionBank.Application.Models.QuestionType", b =>
@@ -432,7 +432,7 @@ namespace questionBank.Application.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("QuestionTypes");
+                    b.ToTable("QuestionTypes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
