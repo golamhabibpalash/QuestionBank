@@ -9,6 +9,7 @@ using questionBank.Application.Data;
 using questionBank.Application.Models;
 using questionBank.Application.ViewModel;
 
+
 namespace questionBank.Application.Controllers
 {
     public class QuestionsController : Controller
@@ -23,7 +24,12 @@ namespace questionBank.Application.Controllers
         // GET: Questions
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Questions.Include(q => q.Chapter);
+            var applicationDbContext = _context.Questions
+                .Include(q => q.QuestionDetails)
+                .Include(q => q.Chapter)
+                    .ThenInclude(q => q.AcademicSubject)
+                        .ThenInclude(p => p.AcademicClass);
+
             return View(await applicationDbContext.ToListAsync());
         }
 
