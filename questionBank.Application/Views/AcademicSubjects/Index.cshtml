@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h4>Academic Subject List</h4><hr />
 
 
 <table class="table">
@@ -25,6 +25,15 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.SubjectName)
+                @if (item.Chapters.Count>0)
+                {
+                    int totoalQuestions = 0;
+                    foreach (var ques in item.Chapters)
+                    {
+                        totoalQuestions += ques.Questions.Count;
+                    }
+                    <span class="badge bg-info">@item.Chapters.Count Chapters <span class="text-black">(@totoalQuestions Questions)</span></span>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AcademicClass.ClassName)

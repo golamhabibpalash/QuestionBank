@@ -22,7 +22,10 @@ namespace questionBank.Application.Controllers
         // GET: AcademicSubjects
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.AcademicSubjects.Include(a => a.AcademicClass);
+            var applicationDbContext = _context.AcademicSubjects
+                .Include(c => c.Chapters)
+                    .ThenInclude(d => d.Questions)
+                .Include(a => a.AcademicClass);
             return View(await applicationDbContext.ToListAsync());
         }
 
