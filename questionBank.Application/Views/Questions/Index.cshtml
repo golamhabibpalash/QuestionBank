@@ -21,7 +21,8 @@
 @foreach (var item in Model) {
         <tr class=" shadow">
             <td style="max-width:700px;min-width:560px">
-                <span class="alert-secondary">@item.Chapter.AcademicSubject.AcademicClass.ClassName; Subject:General Science; Chapter: @item.Chapter.ChapterNumber (@item.Chapter.ChapterName)</span>
+                <span class="alert-secondary">@item.Chapter.AcademicSubject.AcademicClass.ClassName; Subject:@item.Chapter.AcademicSubject.SubjectName; Chapter: @item.Chapter.ChapterNumber (@item.Chapter.ChapterName)</span>
+
                 <p style="text-align:justify">
                     @item.Uddipok
                 </p>
