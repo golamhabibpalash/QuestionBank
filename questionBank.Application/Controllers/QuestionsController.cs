@@ -215,5 +215,44 @@ namespace questionBank.Application.Controllers
             var chapters = await _context.Chapters.Where(m => m.AcademicSubjectId == subjectId).ToListAsync();
             return Json(chapters);
         }
+
+        [HttpGet]
+        public IActionResult MakeQuestion()
+        {
+
+            ViewData["AcademicClassId"] = new SelectList(_context.AcademicClasses, "Id", "ClassName");
+
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> MakeQuestion(MakeQuestionVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                List<Question> questionList = new List<Question>();
+                if (model.ChapterId > 0)
+                {
+                    questionList = await _context
+                        .Questions
+                        .Where(c => c.ChapterId == model.ChapterId)
+                        .Include(s => s.Chapter.AcademicSubject)
+                            .ThenInclude(c => c.AcademicClass).ToListAsync();
+                }
+                else
+                {
+
+                }
+                return View("MadeQuestion");
+            }
+
+            ViewData["AcademicClassId"] = new SelectList(_context.AcademicClasses, "Id", "ClassName",model.AcademicClassId);
+
+            return View(model);
+        }
+
+        public IActionResult MadeQuestion(MadeQuestionVM model)
+        {
+            return View();
+        }
     }
 }
