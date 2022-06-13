@@ -20,13 +20,33 @@ namespace questionBank.Application.Controllers
         }
 
         // GET: AcademicSubjects
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? classId)
         {
-            var applicationDbContext = _context.AcademicSubjects
-                .Include(c => c.Chapters)
-                    .ThenInclude(d => d.Questions)
-                .Include(a => a.AcademicClass);
-            return View(await applicationDbContext.ToListAsync());
+            List<AcademicSubject> academicSubjects = null;
+
+            if (classId == null)
+            {
+                academicSubjects = await _context.AcademicSubjects
+                    .Include(c => c.Chapters)
+                        .ThenInclude(d => d.Questions)
+                            .Include(a => a.AcademicClass).ToListAsync();
+            }
+            else
+            {
+                academicSubjects = await _context.AcademicSubjects
+                    .Where(c => c.AcademicClassId == classId)
+                    .Include(c => c.Chapters)
+                        .ThenInclude(d => d.Questions)
+                            .Include(a => a.AcademicClass).ToListAsync();
+
+                AcademicClass ac = await _context.AcademicClasses.FirstOrDefaultAsync(c => c.Id == classId);
+                if (ac!=null)
+                {
+                    ViewBag.aClass = ac.ClassName;
+                }
+            }
+
+            return View(academicSubjects);
         }
 
         // GET: AcademicSubjects/Details/5

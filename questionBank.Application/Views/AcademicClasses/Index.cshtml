@@ -26,7 +26,7 @@
                     @Html.DisplayFor(modelItem => item.ClassName)
                     @if (item.AcademicSubjects != null)
                     {
-                        <a asp-action="Index" asp-controller="AcademicSubjects" class=" btn-sm btn btn-primary">
+                        <a asp-action="Index" asp-controller="AcademicSubjects" asp-route-classId="@item.Id" class=" btn-sm btn btn-primary">
                             Subject: <span class="badge bg-secondary">@item.AcademicSubjects.Count </span>
                         </a>
                     }

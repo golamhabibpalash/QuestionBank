@@ -20,15 +20,26 @@ namespace questionBank.Application.Controllers
         }
 
         // GET: AcademicClasses
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? classId)
         {
-              return _context.AcademicClasses != null ? 
-                          View(await _context.AcademicClasses
-                          .Include(s => s.AcademicSubjects)
-                            .ThenInclude(p => p.Chapters)
-                                .ThenInclude(q => q.Questions)
-                          .ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.AcademicClasses'  is null.");
+            List<AcademicClass> academicClasses = null;
+            if (classId == null)
+            {
+                academicClasses = await _context.AcademicClasses
+                    .Include(s => s.AcademicSubjects)
+                        .ThenInclude(p => p.Chapters)
+                            .ThenInclude(q => q.Questions).ToListAsync();
+            }
+            else
+            {
+                academicClasses = await _context.AcademicClasses
+                    .Where(a => a.Id == classId)
+                    .Include(s => s.AcademicSubjects)
+                        .ThenInclude(p => p.Chapters)
+                            .ThenInclude(q => q.Questions).ToListAsync();
+            }
+            return View(academicClasses);
+            Problem("Entity set 'ApplicationDbContext.AcademicClasses'  is null.");
         }
 
         // GET: AcademicClasses/Details/5
