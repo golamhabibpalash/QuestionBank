@@ -23,7 +23,11 @@ namespace questionBank.Application.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.AcademicClasses != null ? 
-                          View(await _context.AcademicClasses.ToListAsync()) :
+                          View(await _context.AcademicClasses
+                          .Include(s => s.AcademicSubjects)
+                            .ThenInclude(p => p.Chapters)
+                                .ThenInclude(q => q.Questions)
+                          .ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.AcademicClasses'  is null.");
         }
 

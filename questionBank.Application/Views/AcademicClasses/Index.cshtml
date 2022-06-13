@@ -4,7 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h4>Academic Class List</h4>
+<hr />
 
 
 <table class="table">
@@ -12,22 +13,29 @@
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.ClassName)
+                
             </th>
         
-            <th><a asp-action="Create">Create New</a></th>
+            <th><a asp-action="Create" class="btn btn-sm btn-info"><i class="fa fa-plus"></i>Add New</a></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClassName)
-            </td>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClassName)
+                    @if (item.AcademicSubjects != null)
+                    {
+                        <a asp-action="Index" asp-controller="AcademicSubjects" class=" btn-sm btn btn-primary">
+                            Subject: <span class="badge bg-secondary">@item.AcademicSubjects.Count </span>
+                        </a>
+                    }
+                </td>
           
-            <td>
-                <partial name="~/Views/Shared/_EditDetailsDelete.cshtml" model="@item.Id" />
-            </td>
-        </tr>
-}
+                <td>
+                    <partial name="~/Views/Shared/_EditDetailsDelete.cshtml" model="@item.Id" />
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
