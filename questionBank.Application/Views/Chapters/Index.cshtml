@@ -19,6 +19,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.AcademicSubject)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AcademicSubject.AcademicClass)
+            </th>
          
             <th><a asp-action="Create" class="btn btn-sm btn-info"> <i class="fa fa-plus"></i> Add</a></th>
         </tr>
@@ -28,12 +31,21 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ChapterName)
+                @if (item.Questions.Count > 0)
+                {
+                    <a asp-action="index" asp-controller="Questions" class="btn btn-sm btn-primary" asp-route-chapterId="@item.Id" asp-route-classId="@item.AcademicSubject.AcademicClassId" asp-route-subjectId="@item.AcademicSubjectId">
+                        Total Questions <span class="badge badge-light">@item.Questions.Count</span>
+                    </a>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ChapterNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AcademicSubject.SubjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AcademicSubject.AcademicClass.ClassName)
             </td>
        
             <td>

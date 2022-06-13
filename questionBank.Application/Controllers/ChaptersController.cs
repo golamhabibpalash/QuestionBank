@@ -22,7 +22,13 @@ namespace questionBank.Application.Controllers
         // GET: Chapters
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Chapters.Include(c => c.AcademicSubject);
+            var applicationDbContext = _context.Chapters
+                .Include(q => q.Questions)
+                .Include(c => c.AcademicSubject)
+                 .ThenInclude(ac => ac.AcademicClass)
+                 .OrderBy(a => a.AcademicSubject.AcademicClass)
+                 .ThenBy(p => p.AcademicSubject)
+                 .ThenBy(c => c.ChapterNumber);
             return View(await applicationDbContext.ToListAsync());
         }
 

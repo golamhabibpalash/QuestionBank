@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using questionBank.Application.Data;
 using questionBank.Application.Models;
 using questionBank.Application.ViewModel;
+using Microsoft.EntityFrameworkCore.Query;
 
 
 namespace questionBank.Application.Controllers
@@ -22,13 +23,20 @@ namespace questionBank.Application.Controllers
         }
 
         // GET: Questions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? chapterId, int? subjectId, int? classId)
         {
             var applicationDbContext = _context.Questions
                 .Include(q => q.QuestionDetails)
                 .Include(q => q.Chapter)
                     .ThenInclude(q => q.AcademicSubject)
                         .ThenInclude(p => p.AcademicClass);
+
+            if (chapterId != null)
+            {
+                applicationDbContext = (IIncludableQueryable<Question, AcademicClass?>)(from q in applicationDbContext
+                                       where q.ChapterId == chapterId
+                                       select q);
+            }
 
             return View(await applicationDbContext.ToListAsync());
         }
