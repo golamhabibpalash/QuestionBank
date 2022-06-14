@@ -242,7 +242,7 @@ namespace questionBank.Application.Controllers
                 {
 
                 }
-                return View("MadeQuestion");
+                return View("MadeQuestion", new {model = questionList});
             }
 
             ViewData["AcademicClassId"] = new SelectList(_context.AcademicClasses, "Id", "ClassName",model.AcademicClassId);

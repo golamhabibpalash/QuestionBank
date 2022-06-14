@@ -1,1 +1,35 @@
 ﻿@model MadeQuestionVM
+
+@{
+    int sl = 1;
+
+}
+
+<div class="row">
+    <div class="col-md-10 offset-1">
+        <div class="d-flex justify-content-center">
+            <h5>@Model.InstituteName</h5>
+            <h6>@Model.ExamTypeName</h6>
+        </div>
+    </div>
+</div>
+<hr />
+@if (Model.Questions.Count > 0)
+{
+    foreach (var question in Model.Questions)
+    {
+        <div class="row">
+            <p>@(sl++). @question.Uddipok</p>
+        </div>
+        <ul>
+            @foreach (var qDetails in question.QuestionDetails)
+            {
+                char a='a';
+                int qMark = 1;
+
+                <li>@(a++). @qDetails.QuestionText  @(qMark++)</li>
+            }
+        </ul>
+    }
+
+}
