@@ -7,9 +7,10 @@
 
 <div class="row">
     <div class="col-md-10 offset-1">
-        <div class="d-flex justify-content-center">
-            <h5>@Model.InstituteName</h5>
-            <h6>@Model.ExamTypeName</h6>
+        <div class="text-center">
+            <div class="row"><h5>@Model.InstituteName</h5></div>
+            <div class="row"><h6>@Model.ExamTypeName</h6></div>            
+            
         </div>
     </div>
 </div>
@@ -19,17 +20,33 @@
     foreach (var question in Model.Questions)
     {
         <div class="row">
-            <p>@(sl++). @question.Uddipok</p>
+            <div class="col-11">
+                <div class="row">
+                    <div class="col-1 text-end">
+                        @(sl++).
+                    </div>
+                    <div class="col-11">
+                        <p style="text-align:justify"> @question.Uddipok</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <ul>
-            @foreach (var qDetails in question.QuestionDetails)
-            {
-                char a='a';
-                int qMark = 1;
+        <div class="row">
+            <div class="col-11">
+                <div class="row">
+                    <div class="offset-1 col-11">
+                        <ul class="list-group list-group-flush">
+                            @{int qMark = 1; char a = 'a';}
+                            @foreach (var qDetails in question.QuestionDetails)
+                            {
 
-                <li>@(a++). @qDetails.QuestionText  @(qMark++)</li>
-            }
-        </ul>
+                                <li class="list-group-item">@(a++)) @qDetails.QuestionText  @(qMark++)</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
 
 }

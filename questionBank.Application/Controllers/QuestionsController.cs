@@ -234,6 +234,7 @@ namespace questionBank.Application.Controllers
                 {
                     questionList = await _context
                         .Questions
+                        .Include(g => g.QuestionDetails)
                         .Where(c => c.ChapterId == model.ChapterId)
                         .Include(s => s.Chapter.AcademicSubject)
                             .ThenInclude(c => c.AcademicClass).ToListAsync();
@@ -283,7 +284,16 @@ namespace questionBank.Application.Controllers
                     default:
                         break;
                 }
-                return View("MadeQuestion");
+                questionList = questionList.Take(totalQuestion).ToList();
+                MadeQuestionVM madeQuestionVM = new MadeQuestionVM();
+                madeQuestionVM.TotalMark = model.Marks;
+                madeQuestionVM.Questions = questionList;
+                madeQuestionVM.InstituteName = "Noble Residential School";
+                madeQuestionVM.SubjectName = await _context.AcademicSubjects.Where(m => m.Id == model.AcademicSubjectId).Select(m => m.SubjectName).FirstOrDefaultAsync();
+                madeQuestionVM.ExamTypeName = "Class Test";
+                madeQuestionVM.ClassName = await _context.AcademicClasses.Where(m => m.Id == model.AcademicClassId).Select(c => c.ClassName).FirstOrDefaultAsync();
+
+                return View("MadeQuestion", madeQuestionVM);
             }
 
             ViewData["AcademicClassId"] = new SelectList(_context.AcademicClasses, "Id", "ClassName",model.AcademicClassId);
