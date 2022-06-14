@@ -26,13 +26,15 @@
         <div class="col-md-3">
             <div class="input-group">
                 <span class="input-group-text">Academic Class</span>
-                <select asp-for="AcademicClassId" class="form-control" asp-items="ViewBag.AcademicClassId"></select>
+                <select asp-for="AcademicClassId" class="form-control" asp-items="ViewBag.AcademicClassId">
+                    <option selected disabled>Select Class</option>
+                </select>
             </div>
         </div>
         <div class="col-md-3">
             <div class="input-group">
                 <span class="input-group-text">Academic Subjects</span>
-                <select asp-for="AcademicSubjecId" class="form-control">
+                <select asp-for="AcademicSubjectId" class="form-control">
                     <option selected disabled>Select Class First</option>
                 </select>
             </div>
@@ -62,10 +64,57 @@
                 </select>
             </div>
         </div>
-    </div>
+    </div><br />
     <div class="row">
         <div class="offset-md-5 col-md-2">
-            <button type="submit" class="btn btn-info">Make Question</button>
+            <button type="submit" class="btn btn-info btn-lg">Make Question</button>
         </div>
     </div>
 </form>
+
+@section Scripts{ 
+    <script>
+        $(document).ready(function () {
+            $('#AcademicClassId').change(function () {
+                let classId = $('#AcademicClassId option:selected').val();
+                $.ajax({
+                    url: '/Questions/SelectSubjectByClassId?classId=' + classId,
+                    method: 'Post',
+                    type: 'JSON',
+                    success: function (data) {
+                        $('#AcademicSubjectId').empty();
+                        var op = '<option disabled selected>Select Subject</option>';
+                        $('#AcademicSubjectId').append(op);
+                        $.each(data, function (i, obj) {
+                            var op = "<option value='" + obj.id + "'>" + obj.subjectName + "</option>";
+                            $('#AcademicSubjectId').append(op);
+                        });
+                    },
+                    error: function () { }
+                });
+            });
+
+            $('#AcademicSubjectId').change(function () {
+                let subjectId = $('#AcademicSubjectId option:selected').val();
+                $.ajax({
+                    url: '/Questions/SelectChapterBySubjectId?SubjectId=' + subjectId,
+                    method: 'Post',
+                    type: 'JSON',
+                    success: function (data) {
+                        $('#ChapterId').empty();
+                        var op = '<option disabled selected>Select Chapter</option>';
+                        $('#ChapterId').append(op);
+                        $.each(data, function (i, obj) {
+                            console.log(obj);
+                            var op = "<option value='" + obj.id + "'>" + obj.chapterName + "</option>";
+                            $('#ChapterId').append(op);
+                        });
+                    },
+                    error: function () { }
+                });
+            });
+
+
+        });
+    </script>
+}
