@@ -240,9 +240,50 @@ namespace questionBank.Application.Controllers
                 }
                 else
                 {
-
+                    questionList = await _context
+                        .Questions
+                        .Where(c => c.Chapter.AcademicSubject.AcademicClassId == model.AcademicClassId && c.Chapter.AcademicSubjectId == model.AcademicSubjectId)
+                        .Include(m => m.QuestionDetails)
+                        .ToListAsync();
                 }
-                return View("MadeQuestion", new {model = questionList});
+                int totalQuestion = 0;
+                switch (model.Marks)
+                {
+                    case 10:
+                        totalQuestion = 1;
+                        break;
+                    case 20:
+                        totalQuestion = 2;
+                        break;
+                    case 30:
+                        totalQuestion = 3;
+                        break;
+                    case 40:
+                        totalQuestion = 4;
+                        break;
+                    case 50:
+                        totalQuestion = 5;
+                        break;
+                    case 60:
+                        totalQuestion = 6;
+                        break;
+                    case 70:
+                        totalQuestion = 7;
+                        break;
+                    case 80:
+                        totalQuestion = 8;
+                        break;
+                    case 90:
+                        totalQuestion = 9;
+                        break;
+                    case 100:
+                        totalQuestion = 10;
+                        break;
+
+                    default:
+                        break;
+                }
+                return View("MadeQuestion");
             }
 
             ViewData["AcademicClassId"] = new SelectList(_context.AcademicClasses, "Id", "ClassName",model.AcademicClassId);
