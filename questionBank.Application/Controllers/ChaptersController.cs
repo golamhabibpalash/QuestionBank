@@ -22,6 +22,9 @@ namespace questionBank.Application.Controllers
         // GET: Chapters
         public async Task<IActionResult> Index()
         {
+
+            ViewData["AcademicClassId"] = new SelectList(_context.AcademicClasses, "Id", "ClassName");
+
             var applicationDbContext = _context.Chapters
                 .Include(q => q.Questions)
                 .Include(c => c.AcademicSubject)

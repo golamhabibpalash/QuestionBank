@@ -4,41 +4,50 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>Chapter</h4>
+
+<h4>Edit Chapter</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ChapterName" class="control-label"></label>
-                <input asp-for="ChapterName" class="form-control" />
-                <span asp-validation-for="ChapterName" class="text-danger"></span>
+            <div class="form-group row pb-1">
+                <label asp-for="ChapterName" class="control-label col-form-label col-md-2 text-md-end"></label>
+                <div class="col-md-8">
+                    <input asp-for="ChapterName" class="form-control" />
+                    <span asp-validation-for="ChapterName" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ChapterNumber" class="control-label"></label>
-                <input asp-for="ChapterNumber" class="form-control" />
-                <span asp-validation-for="ChapterNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AcademicSubjectId" class="control-label"></label>
-                <select asp-for="AcademicSubjectId" class="form-control" asp-items="ViewBag.AcademicSubjectId"></select>
-                <span asp-validation-for="AcademicSubjectId" class="text-danger"></span>
-            </div>
+
             <input type="hidden" asp-for="Id" />
-       
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <div class="form-group row pb-1">
+                <label asp-for="ChapterNumber" class="control-label col-form-label col-md-2 text-md-end"></label>
+                <div class="col-md-8">
+                    <input asp-for="ChapterNumber" class="form-control" />
+                    <span asp-validation-for="ChapterNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row pb-1">
+                <label asp-for="AcademicSubjectId" class="control-label col-form-label col-md-2 text-md-end"> Subject</label>
+                <div class="col-md-8">
+                    <select asp-for="AcademicSubjectId" class="form-control" asp-items="ViewBag.AcademicSubjectId">
+                        <option selected disabled>Select Subject</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-2 offset-md-2">
+                    <input type="submit" value="Update" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-info">Back to List</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
