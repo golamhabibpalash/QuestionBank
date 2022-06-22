@@ -25,20 +25,23 @@ namespace questionBank.Application.Controllers
         // GET: Questions
         public async Task<IActionResult> Index(int? chapterId, int? subjectId, int? classId)
         {
-            var applicationDbContext = _context.Questions
+            var applicationDbContext = await _context.Questions
                 .Include(q => q.QuestionDetails)
                 .Include(q => q.Chapter)
                     .ThenInclude(q => q.AcademicSubject)
-                        .ThenInclude(p => p.AcademicClass);
+                        .ThenInclude(p => p.AcademicClass).ToListAsync();
 
             if (chapterId != null)
             {
-                applicationDbContext = (IIncludableQueryable<Question, AcademicClass?>)(from q in applicationDbContext
+                applicationDbContext = (from q in applicationDbContext
                                        where q.ChapterId == chapterId
-                                       select q);
+                                       select q).ToList();
             }
-
-            return View(await applicationDbContext.ToListAsync());
+            if (subjectId!=null)
+            {
+                applicationDbContext = applicationDbContext.Where(a => a.Chapter.AcademicSubjectId == subjectId).ToList();
+            }
+            return View(applicationDbContext);
         }
 
         // GET: Questions/Details/5
@@ -224,29 +227,13 @@ namespace questionBank.Application.Controllers
 
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> MakeQuestion(MakeQuestionVM model)
         {
             if (ModelState.IsValid)
             {
-                List<Question> questionList = new List<Question>();
-                if (model.ChapterId > 0)
-                {
-                    questionList = await _context
-                        .Questions
-                        .Include(g => g.QuestionDetails)
-                        .Where(c => c.ChapterId == model.ChapterId)
-                        .Include(s => s.Chapter.AcademicSubject)
-                            .ThenInclude(c => c.AcademicClass).ToListAsync();
-                }
-                else
-                {
-                    questionList = await _context
-                        .Questions
-                        .Where(c => c.Chapter.AcademicSubject.AcademicClassId == model.AcademicClassId && c.Chapter.AcademicSubjectId == model.AcademicSubjectId)
-                        .Include(m => m.QuestionDetails)
-                        .ToListAsync();
-                }
+                
                 int totalQuestion = 0;
                 switch (model.Marks)
                 {
@@ -284,12 +271,60 @@ namespace questionBank.Application.Controllers
                     default:
                         break;
                 }
-                questionList = questionList.Take(totalQuestion).ToList();
+                List<Question> questionList = new List<Question>();
+                if (model.ChapterId > 0)
+                {
+                    questionList = await _context
+                        .Questions
+                        .Include(g => g.QuestionDetails)
+                        .Where(c => c.ChapterId == model.ChapterId)
+                        .Include(s => s.Chapter.AcademicSubject)
+                            .ThenInclude(c => c.AcademicClass).ToListAsync();
+                }
+                else
+                {
+                    List<Chapter> chapterListMain = await _context.Chapters
+                        .Include(c => c.Questions)
+                            .ThenInclude(w => w.QuestionDetails)
+                        .Include(d => d.AcademicSubject)
+                            .ThenInclude(a => a.AcademicClass)
+                        .Where(c => c.AcademicSubjectId == model.AcademicSubjectId && c.Questions.Count>0).ToListAsync();
+
+                    int totalChapter = chapterListMain.Count;
+                    List<Chapter> chapterList = chapterListMain;
+                    for (int i = 0; i < totalQuestion; i++)
+                    {
+                        if (i == totalChapter)
+                        {
+                            foreach (Chapter item in chapterListMain.ToList())
+                            {
+                                chapterList.Add(item);
+                            }
+                        }
+                        var random = new Random();
+
+                        int chooseQuestionIndex = random.Next(chapterList.ElementAt(i).Questions.Count);
+                        foreach (var question in questionList)
+                        {
+                            if (question.Id == chapterList.ElementAt(i).Questions.ElementAt(chooseQuestionIndex).Id)
+                            {
+                                chooseQuestionIndex = random.Next(chapterList.ElementAt(i).Questions.Count);
+                            }
+                        }
+                        questionList.Add(chapterList.ElementAt(i).Questions.ElementAt(chooseQuestionIndex));
+                    }
+                    
+                    questionList = questionList.OrderBy(c => c.ChapterId).ToList();
+                }
+                
+                
                 MadeQuestionVM madeQuestionVM = new MadeQuestionVM();
                 madeQuestionVM.TotalMark = model.Marks;
+                madeQuestionVM.Time = model.Marks;
                 madeQuestionVM.Questions = questionList;
-                madeQuestionVM.InstituteName = "Noble Residential School";
+                madeQuestionVM.InstituteName = "Name of the Institute";
                 madeQuestionVM.SubjectName = await _context.AcademicSubjects.Where(m => m.Id == model.AcademicSubjectId).Select(m => m.SubjectName).FirstOrDefaultAsync();
+
                 madeQuestionVM.ExamTypeName = "Class Test";
                 madeQuestionVM.ClassName = await _context.AcademicClasses.Where(m => m.Id == model.AcademicClassId).Select(c => c.ClassName).FirstOrDefaultAsync();
 

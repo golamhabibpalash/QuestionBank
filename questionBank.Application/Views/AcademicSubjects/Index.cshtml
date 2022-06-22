@@ -4,10 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h4>Academic Subject List @if (ViewBag.aClass != null)
-{
-    <span>( @ViewBag.aClass) <a asp-action="Index" class="btn btn-sm btn-info" >View All</a></span>
-}</h4><hr />
+<h4>Academic Subject List 
+    @if (ViewBag.aClass != null)
+    {
+        <span>( @ViewBag.aClass) <a asp-action="Index" class="btn btn-sm btn-info" >View All</a></span>
+    }
+</h4><hr />
 
 
 <table class="table">
@@ -35,7 +37,7 @@
                     {
                         totoalQuestions += ques.Questions.Count;
                     }
-                    <span class="badge bg-info">@item.Chapters.Count Chapters <span class="text-black">(@totoalQuestions Questions)</span></span>
+                    <span class="badge bg-info">@item.Chapters.Count Chapters <a asp-action="Index" asp-controller="Questions" asp-route-subjectId="@item.Id" class="text-black">(@totoalQuestions Questions)</a></span>
                 }
             </td>
             <td>

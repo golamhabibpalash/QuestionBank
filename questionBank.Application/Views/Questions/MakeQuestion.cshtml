@@ -14,9 +14,9 @@
     </div>
     <div class="col-md-2 text-md-start">
         <select class="form-control">
-            <option value="1">Exam Type 1</option>
-            <option value="2">Exam Type 2</option>
-            <option value="3">Exam Type 3</option>
+            <option value="1"> Class Test </option>
+            <option value="2"> Monthly Exam </option>
+            <option value="3"> Yearly Exam </option>
         </select>
     </div>
 </div>
@@ -103,6 +103,7 @@
                     success: function (data) {
                         $('#ChapterId').empty();
                         var op = '<option disabled selected>Select Chapter</option>';
+                        var op = '<option value="0">All Chapter</option>';
                         $('#ChapterId').append(op);
                         $.each(data, function (i, obj) {
                             console.log(obj);

@@ -40,6 +40,7 @@ namespace questionBank.Application.Controllers
                             .Include(a => a.AcademicClass).ToListAsync();
 
                 AcademicClass ac = await _context.AcademicClasses.FirstOrDefaultAsync(c => c.Id == classId);
+                ViewBag.aClass = "";
                 if (ac!=null)
                 {
                     ViewBag.aClass = ac.ClassName;
